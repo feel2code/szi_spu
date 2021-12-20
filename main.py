@@ -3,19 +3,16 @@ from mimesis import Person
 from mimesis.enums import Gender
 from mimesis.locales import Locale
 from uuid import uuid4
-import os
 
-
+# выбираю локализацию для генерирования персональных данных
 person = Person(Locale.RU)
 
 
-# GUID LOWER
+# генерирую GUID в нижнем регистре
 def guid_lower(): return str(uuid4()).lower()
 
-guid_new = guid_lower()
 
-
-
+# генератор СНИЛС
 def snils():
     nums = [
         random.randint(1, 1) if x == 0
@@ -44,57 +41,56 @@ def snils():
     return ''.join([str(x) for x in nums])
 
 
+# генерирую данные для матери
 name = person.full_name(gender = Gender.FEMALE)
 pat_name = person.full_name().split()
 fio_new = name + ' ' + pat_name[1] + 'вна'
 fio_new = fio_new.upper().split()
 snils_new = snils()
 
+# открываем файл для сервера и меняем там данные матери
 with open('toserver.xml') as file_in:
     text = file_in.read()
-
 text = text.replace("ФАМИЛИЯ", fio_new[1])
 text = text.replace("ИМЯ",  fio_new[0])
 text = text.replace("ОТЧЕСТВО",  fio_new[2])
 text = text.replace('oldsnils', snils_new)
-
 newfile = "[" + snils_new + "].xml"
 with open(newfile, "w") as file_out:
     file_out.write(text)
 
-
+# открываем файл для ВИО и меняем там данные матери, ребенка и отца
 with open('tovio.xml') as file_in2:
     textvio = file_in2.read()
-
+# мать
 textvio = textvio.replace('номерочек', str(random.randint(11111111111,99999999999)))
 textvio = textvio.replace('снилсмать', snils_new)
 textvio = textvio.replace('фамилияребенок', fio_new[1])
 textvio = textvio.replace('имямать', fio_new[0])
 textvio = textvio.replace('отчествомать', fio_new[2])
-
-
-
+# ребенок
 name_rebenok = str(person.full_name(gender = Gender.FEMALE)).upper()
 fio_rebenok = name_rebenok.split()
 snils_rebenok = snils()
 textvio = textvio.replace('снилсребенок', snils_rebenok)
 textvio = textvio.replace('имяребенок', fio_rebenok[0])
-
+# отец
 snils_otec = snils()
 fio_otec = str(fio_new[1])
 textvio = textvio.replace('фамилияотец', fio_otec[0:-1])
 textvio = textvio.replace('снилсотец', snils_otec)
-
+# гуид
+guid_new = guid_lower()
 textvio = textvio.replace('гуид', guid_new)
-
-
-newfile2 = "СЗИ_СПУ_" + str(random.randint(1000, 9999)) + ".xml"
+# сохраняем файл для вио
+newfile2 = "СЗИ_СПУ_" + str(snils_new.replace(' ', '_')) + ".xml"
 with open(newfile2, "w") as file_out2:
     file_out2.write(textvio)
 
+
+# создаем файл скрипта для отправки
 with open('send.sh') as send_script:
     sendtext = send_script.read()
-
 sendtext = sendtext.replace('123', snils_new)
-
-os.system('./Users/felixmac/Documents/szi_spu/send.sh')
+with open('send' + snils_new + '.sh', "w") as file_out3:
+    file_out3.write(sendtext)
