@@ -97,4 +97,4 @@ with open('send.sh') as send_script:
 
 sendtext = sendtext.replace('123', snils_new)
 
-os.system('./Users/felixmac/Documents/szi_spu/send.sh'
+os.system('./Users/felixmac/Documents/szi_spu/send.sh')
