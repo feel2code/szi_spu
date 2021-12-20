@@ -92,5 +92,5 @@ with open(newfile2, "w") as file_out2:
 with open('send.sh') as send_script:
     sendtext = send_script.read()
 sendtext = sendtext.replace('123', snils_new)
-with open('send' + snils_new + '.sh', "w") as file_out3:
+with open('send' + str(snils_new.replace(' ', '_')) + '.sh', "w") as file_out3:
     file_out3.write(sendtext)
