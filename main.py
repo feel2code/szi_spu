@@ -3,6 +3,7 @@ from mimesis import Person
 from mimesis.enums import Gender
 from mimesis.locales import Locale
 from uuid import uuid4
+import os
 
 
 person = Person(Locale.RU)
@@ -73,19 +74,27 @@ textvio = textvio.replace('отчествомать', fio_new[2])
 
 
 
-name_rebenok = str(person.full_name(gender = Gender.MALE)).upper()
+name_rebenok = str(person.full_name(gender = Gender.FEMALE)).upper()
 fio_rebenok = name_rebenok.split()
 snils_rebenok = snils()
 textvio = textvio.replace('снилсребенок', snils_rebenok)
 textvio = textvio.replace('имяребенок', fio_rebenok[0])
-textvio = textvio.replace('имяребенок', fio_rebenok[0])
 
 snils_otec = snils()
+fio_otec = str(fio_new[1])
+textvio = textvio.replace('фамилияотец', fio_otec[0:-1])
 textvio = textvio.replace('снилсотец', snils_otec)
 
 textvio = textvio.replace('гуид', guid_new)
 
 
-newfile2 = "СЗИ_СПУ_" + snils_new + ".xml"
+newfile2 = "СЗИ_СПУ_" + str(random.randint(1000, 9999)) + ".xml"
 with open(newfile2, "w") as file_out2:
     file_out2.write(textvio)
+
+with open('send.sh') as send_script:
+    sendtext = send_script.read()
+
+sendtext = sendtext.replace('123', snils_new)
+
+os.system('./Users/felixmac/Documents/szi_spu/send.sh'
