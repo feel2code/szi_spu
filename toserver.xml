@@ -6,7 +6,7 @@
 	</om:entry>
 	<om:entry>
 		<om:key>spu.middleName</om:key>
-		<om:value>ФАМИЛИЯ</om:value>
+		<om:value>ОТЧЕСТВО</om:value>
 	</om:entry>
 	<om:entry>
 		<om:key>spu.firstName</om:key>
@@ -22,7 +22,7 @@
 	</om:entry>
 	<om:entry>
 		<om:key>spu.lastName</om:key>
-		<om:value>ОТЧЕСТВО</om:value>
+		<om:value>ФАМИЛИЯ</om:value>
 	</om:entry>
 	<om:entry>
 		<om:key>spu.deathdate</om:key>
