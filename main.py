@@ -32,17 +32,20 @@ def snils():
 
     elif cont > 101:
         cont = (cont % 101)
-        if cont in (100, 101): cont = '00'
-        elif cont < 10: cont = '0' + str(cont)
+        if cont in (100, 101):
+            cont = '00'
+        elif cont < 10:
+            cont = '0' + str(cont)
 
-    elif cont < 10: cont = '0' + str(cont)
+    elif cont < 10:
+        cont = '0' + str(cont)
 
     nums.append(cont)
     return ''.join([str(x) for x in nums])
 
 
 # генерирую данные для матери
-name = person.full_name(gender = Gender.FEMALE)
+name = person.full_name(gender=Gender.FEMALE)
 pat_name = person.full_name().split()
 fio_new = name + ' ' + pat_name[1] + 'вна'
 fio_new = fio_new.upper().split()
@@ -63,13 +66,14 @@ with open(newfile, "w") as file_out:
 with open('tovio.xml') as file_in2:
     textvio = file_in2.read()
 # мать
-textvio = textvio.replace('номерочек', str(random.randint(11111111111,99999999999)))
+textvio = textvio.replace('номерочек', str(
+    random.randint(11111111111, 99999999999)))
 textvio = textvio.replace('снилсмать', snils_new)
 textvio = textvio.replace('фамилияребенок', fio_new[1])
 textvio = textvio.replace('имямать', fio_new[0])
 textvio = textvio.replace('отчествомать', fio_new[2])
 # ребенок
-name_rebenok = str(person.full_name(gender = Gender.FEMALE)).upper()
+name_rebenok = str(person.full_name(gender=Gender.FEMALE)).upper()
 fio_rebenok = name_rebenok.split()
 snils_rebenok = snils()
 textvio = textvio.replace('снилсребенок', snils_rebenok)
